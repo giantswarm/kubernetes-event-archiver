@@ -6,6 +6,7 @@ import time
 import signal
 import sys
 
+requests.packages.urllib3.disable_warnings()
 
 KUBERNETES_API_URL = "https://kubernetes.default.svc/api/v1/watch/events"
 ELASTICSEARCH = "elasticsearch:9200"
