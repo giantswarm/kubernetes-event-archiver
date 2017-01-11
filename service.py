@@ -61,5 +61,8 @@ if __name__ == "__main__":
                 try:
                     event = json.loads(line)
                     archive_event(event)
+                except ValueError as e:
+                    print("JSON ValueError:")
+                    print("'%s'" % line)
                 except Exception as e:
                     print("Error: %s", e)
