@@ -27,16 +27,13 @@ def sigterm_handler(_signo, _stack_frame):
 
 def archive_event(event):
     # index name from timestamp
-    index = "kube-events-%s" % event["object"]["firstTimestamp"][0:10]
+    index = "kube-events-%s" % event["object"]["lastTimestamp"][0:10]
     url = "http://{host}/{index}/event/{id}".format(
         host=ELASTICSEARCH,
         index=index,
         id=event_hash(event))
     data = {"_id": id, "_source": event}
-    headers = {
-        "Authorization": "Bearer %s" % token
-    }
-    r = requests.put(url, headers=headers, json=event)
+    r = requests.put(url, json=event)
     if r.status_code == 201:
         print("Archived event %s" % url)
     else:
@@ -50,10 +47,14 @@ def event_hash(event):
 if __name__ == "__main__":
     signal.signal(signal.SIGTERM, sigterm_handler)
     TOKEN = get_default_token()
+    headers = {
+        "Authorization": "Bearer %s" % TOKEN
+    }
+
     time.sleep(10)
 
     while True:
-        r = requests.get(KUBERNETES_API_URL, stream=True, verify=False)
+        r = requests.get(KUBERNETES_API_URL, headers=headers, stream=True, verify=False)
         if r.encoding is None:
             r.encoding = 'utf-8'
         for line in r.iter_lines(decode_unicode=True):
@@ -61,5 +62,8 @@ if __name__ == "__main__":
                 try:
                     event = json.loads(line)
                     archive_event(event)
+                except ValueError as e:
+                    print("JSON ValueError:")
+                    print("'%s'" % line)
                 except Exception as e:
                     print("Error: %s", e)
