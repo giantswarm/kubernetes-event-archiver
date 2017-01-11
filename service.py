@@ -27,7 +27,7 @@ def sigterm_handler(_signo, _stack_frame):
 
 def archive_event(event):
     # index name from timestamp
-    index = "kube-events-%s" % event["object"]["firstTimestamp"][0:10]
+    index = "kube-events-%s" % event["object"]["lastTimestamp"][0:10]
     url = "http://{host}/{index}/event/{id}".format(
         host=ELASTICSEARCH,
         index=index,
