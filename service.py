@@ -1,4 +1,5 @@
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import json
 import datetime
 import hashlib
@@ -6,7 +7,7 @@ import time
 import signal
 import sys
 
-requests.packages.urllib3.disable_warnings()
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 KUBERNETES_API_URL = "https://kubernetes.default.svc/api/v1/watch/events"
 ELASTICSEARCH = "elasticsearch:9200"
