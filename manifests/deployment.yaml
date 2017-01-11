@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: kubernetes-event-archiver
+  namespace: logging
+  labels:
+    app: kubernetes-event-archiver
+spec:
+  template:
+    metadata:
+      labels:
+        app: kube-eventskubernetes-event-archiver
+    spec:
+      containers:
+      - name: kubernetes-event-archiver
+        image: giantswarm/kubernetes-event-archiver:latest
+        imagePullPolicy: Always
