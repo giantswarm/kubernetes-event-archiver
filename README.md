@@ -4,7 +4,7 @@
 
 A little service that reads events from the Kubernetes API and writes them to ElasticSearch.
 
-It is assumed that ElasticSearch is running in the same namespace and accessible via hostname `elasticsearch` and port `9200` via HTTP. (This could easily be made configurable using environment variables.)
+It is assumed that ElasticSearch is running in the same namespace and accessible via hostname `elasticsearch` and port `9200` via HTTP (this could easily be made configurable using environment variables). The document type written is `event` and the indices written to have the name format `kube-events-YYYY-MM-DD`, where `YYYY-MM-DD` is the date derived from the event's `lastTimestamp`.
 
 The kubernetes API is accessed via the hostname `kubernetes.default.svc`, so the according service is needed in namespace `default`.
 
