@@ -53,7 +53,6 @@ if __name__ == "__main__":
     time.sleep(10)
 
     while True:
-        print("Starting")
         r = requests.get(KUBERNETES_API_URL, stream=True, verify=False)
         if r.encoding is None:
             r.encoding = 'utf-8'
